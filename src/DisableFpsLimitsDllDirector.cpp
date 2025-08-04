@@ -71,9 +71,14 @@ namespace
 
 				logger.WriteLine(LogLevel::Info, "Attempting to overwrite memory");
 
-				OverwriteMemory(0x70244a, 0xFF);
-				OverwriteMemory(0x702457, 0xFF);
-				OverwriteMemory(0x702462, 0xFF);
+                                // Patch the immediate value for the MOV instructions that
+                                // set the FPS caps. The immediate value starts 6 bytes after
+                                // the beginning of each instruction, so we add the offset to
+                                // target the correct byte and avoid corrupting the opcode.
+
+                                OverwriteMemory(0x702450, 0xFF);
+                                OverwriteMemory(0x70245D, 0xFF);
+                                OverwriteMemory(0x702468, 0xFF);
 
 				logger.WriteLine(LogLevel::Info, "Disabled the FPS limits during simulation.");
 			}
